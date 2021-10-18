@@ -2,4 +2,4 @@
 
 # Správce hesel s dvoufaktorovou autentizací
 
-#It has been chosen
+It has been chosen
