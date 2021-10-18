@@ -1,7 +1,5 @@
 # AKR_Project
 
-# Nástroj pro prolomení šifrované komunikace systému RSA
-## OR
-# Šifrovaná komunikace mezi dvěma uživateli
+# Správce hesel s dvoufaktorovou autentizací
 
-#Choose u mfs
+#It has been chosen
