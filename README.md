@@ -12,3 +12,13 @@ ak by bolo treba mail na posielanie 2fa tak tu je k nemu pristup
 mail: adventurousmanager@gmail.com
 
 heslo: &JQ3R2a*sj~\>/6s
+
+#Treba nainštalovať 
+
+pyotp --> pip3 install pyotp
+
+qrcode --> pip3 install qrcode
+
+pillow --> pip3 install Pillow
+
+IPython --> pip3 install IPython
