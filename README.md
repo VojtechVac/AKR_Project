@@ -11,7 +11,7 @@ ak by bolo treba mail na posielanie 2fa tak tu je k nemu pristup
 
 mail: adventurousmanager@gmail.com
 
-heslo: 8^Tfj3@RGL
+heslo: &JQ3R2a*sj~\>/6s
 
 #Treba nainštalovať 
 
