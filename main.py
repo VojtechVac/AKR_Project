@@ -4,7 +4,7 @@ import os
 from sys import platform
 import sqlite3
 import hashlib
-
+import pwinput
 from login import Login
 
 def clearscreen():
@@ -52,13 +52,11 @@ c.execute("""CREATE TABLE IF NOT EXISTS users (
     elif pwVerify(password) != True:
         clearscreen()
         print("Skus znova.")
-    elif i == 4:
-        print("Prilis vela pokusov")
 """
 
-print("vlož email: ")
+print("Zadaj email: ")
 mail = input()
-password = input()
+password = pwinput.pwinput(prompt = 'Zadaj heslo: ', mask='*')
 #Hash hesla
 login = Login(mail, password)
 login.hashPassword()
