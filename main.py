@@ -6,6 +6,7 @@ import sqlite3
 import hashlib
 import pwinput
 from login import Login
+import logging
 
 def clearscreen():
     if platform == 'win32':
@@ -32,6 +33,14 @@ def pwVerify(password):
 #PREMENNE
 mail = ""
 password = ""
+logging.basicConfig(filename="logfile.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+logger=logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+"""logger.info("Just an information")
+logger.warning("Its a Warning")"""
 
 conn = sqlite3.connect('users.db')
 c = conn.cursor()
@@ -52,6 +61,7 @@ c.execute("""CREATE TABLE IF NOT EXISTS users (
     elif pwVerify(password) != True:
         clearscreen()
         print("Skus znova.")
+        logger.info("Wrong password")
 """
 
 print("Zadaj email: ")
@@ -62,7 +72,7 @@ login = Login(mail, password)
 login.hashPassword()
 
 #Vlozenie mailu a hashu hesla do databazy cez preparedstatement
-c.execute("""INSERT INTO users ('mail', 'password') VALUES (?, ?);""", (mail, login.getHash()))
+#c.execute("""INSERT INTO users ('mail', 'password') VALUES (?, ?);""", (mail, login.getHash()))
 conn.commit()
 
 #Print databazy
@@ -70,13 +80,14 @@ for row in c.execute('SELECT * FROM users;'):
     print(row)
 
 #Posielanie mailu, DOCASNE VYPNUTE
-#se = sendEmail()
-#se.send_email(mail) 
+se = sendEmail()
+se.send_email(mail) 
 print("Zadaj kod:")
 x = input()
 
 if x == str(se.getMessage()):
     print("Spravny kod")
+    logger.info("Successful login")
     input("====Stlač enter====")
     # MENU
     clearscreen()
@@ -86,12 +97,15 @@ if x == str(se.getMessage()):
     while volba != 0:
         if volba == 1:
             print("Zvolil si zobrazenie hesiel")
+            logger.info("Passwords viewed")
             input("====Stlac enter====")
         elif volba == 2:
             print("Zvolil si pridanie hesla.")
+            logger.info("Password added")
             input("====Stlac enter====")
         elif volba == 3:
             print("Zvolil si zmazanie hesla")
+            logger.info("Password deleted")
             input("====Stlac enter====")
         else:
             print("Nespravna volba.")
@@ -105,8 +119,9 @@ if x == str(se.getMessage()):
             print("Nespravny input.")
             break
     print("Exit.")
-    
+    logger.info("Quit")
     conn.close()
 
 elif x != str(se.getMessage()):
     print("Nespravny kod")
+    logger.info("Unsuccessful login")
