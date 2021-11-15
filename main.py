@@ -4,7 +4,7 @@ import os
 from sys import platform
 import sqlite3
 import hashlib
-import pwinput
+import getpass
 from login import Login
 import logging
 
@@ -66,7 +66,7 @@ c.execute("""CREATE TABLE IF NOT EXISTS users (
 
 print("Zadaj email: ")
 mail = input()
-password = pwinput.pwinput(prompt = 'Zadaj heslo: ', mask='*')
+password = getpass.getpass(prompt='Zadaj heslo:')
 #Hash hesla
 login = Login(mail, password)
 login.hashPassword()
@@ -80,8 +80,8 @@ for row in c.execute('SELECT * FROM users;'):
     print(row)
 
 #Posielanie mailu, DOCASNE VYPNUTE
-se = sendEmail()
-se.send_email(mail) 
+#se = sendEmail()
+#se.send_email(mail) 
 print("Zadaj kod:")
 x = input()
 
