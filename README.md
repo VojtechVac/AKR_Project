@@ -26,3 +26,5 @@ IPython --> pip3 install IPython
 pwinput --> pip install pwinput
 
 bcrypt --> pip3 install bcrypt
+
+Ak nefungujú knižnice vo VSCODE --> Ctrl + Shift + P, Python: Select Interpreter, vyskúšať čo funguje
