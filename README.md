@@ -24,3 +24,5 @@ pillow --> pip3 install Pillow
 IPython --> pip3 install IPython
 
 pwinput --> pip install pwinput
+
+bcrypt --> pip3 install bcrypt
