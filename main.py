@@ -7,6 +7,8 @@ import hashlib
 import getpass
 from login import Login
 import logging
+import bcrypt
+from sqliteoperations import Database
 
 def clearscreen():
     if platform == 'win32':
@@ -35,22 +37,16 @@ def firstScreen():
     print("2. Registrovat sa")
     print("0. Exit")
 
+
 #PREMENNE
 mail = ""
 password = ""
 logging.basicConfig(filename="logfile.log",
                     format='%(asctime)s %(message)s',
-                    filemode='w')
+                    filemode='a')
 logger=logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-conn = sqlite3.connect('users.db')
-c = conn.cursor()
-
-c.execute("""CREATE TABLE IF NOT EXISTS users (
-            mail text,
-            password text
-            )""")
 
 #Tuto sa user prihlasuje, ma 5 pokusov zadat spravne heslo
 """for i in range(5):
@@ -75,65 +71,62 @@ while choice != 0:
         print("Zadaj email: ")
         mail = input()
         password = getpass.getpass(prompt='Zadaj heslo:')
-        #Hash hesla
-        login = Login(mail, password)
-        login.hashPassword()
-
-        #Vlozenie mailu a hashu hesla do databazy cez preparedstatement, DOCASNE VYPNUTE
-        #c.execute("""INSERT INTO users ('mail', 'password') VALUES (?, ?);""", (mail, login.getHash()))
-        #conn.commit()
-        
-        clearscreen()
-
-        #Posielanie mailu, DOCASNE VYPNUTE
-        se = sendEmail()
-        se.send_email(mail) 
-        print("Zadaj kod:")
-        x = input()
-
-        if x == str(se.getMessage()):
-            print("Spravny kod")
-            logger.info("Successful login")
-            input("====Stlač enter====")
-            clearscreen()
-            menu()
-            volba = int(input("Zvol moznost:"))
-
-            while volba != 0:
-                if volba == 1:
-                    print("Zvolil si zobrazenie hesiel")
-                    logger.info("Passwords viewed")
-                    input("====Stlac enter====")
-                elif volba == 2:
-                    print("Zvolil si pridanie hesla.")
-                    logger.info("Password added")
-                    input("====Stlac enter====")
-                elif volba == 3:
-                    print("Zvolil si zmazanie hesla")
-                    logger.info("Password deleted")
-                    input("====Stlac enter====")
-                else:
-                    print("Nespravna volba.")
-                    input("====Stlac enter====")
-
+        database = Database(mail, password)
+        if database.comparePasswords() == True:
+            #clearscreen()
+            #Posielanie mailu, DOCASNE VYPNUTE
+            #se = sendEmail()
+            #se.send_email(mail) 
+            print("Zadaj kod:")
+            x = input()
+            if x == str(se.getMessage()):
+                print("Spravny kod")
+                logger.info("Successful login")
+                input("====Stlač enter====")
                 clearscreen()
                 menu()
-                try:
-                    volba = int(input("Zvol moznost:"))
-                except:
-                    print("Nespravny input.")
-                    break
-            print("Logging out.")
-            logger.info("Log out")
-            conn.close()
+                volba = int(input("Zvol moznost:"))
 
-        elif x != str(se.getMessage()):
-            print("Nespravny kod")
-            logger.info("Unsuccessful login")
+                while volba != 0:
+                    if volba == 1:
+                        print("Zvolil si zobrazenie hesiel")
+                        logger.info("Passwords viewed")
+                        input("====Stlac enter====")
+                    elif volba == 2:
+                        print("Zvolil si pridanie hesla.")
+                        logger.info("Password added")
+                        input("====Stlac enter====")
+                    elif volba == 3:
+                        print("Zvolil si zmazanie hesla")
+                        logger.info("Password deleted")
+                        input("====Stlac enter====")
+                    else:
+                        print("Nespravna volba.")
+                        input("====Stlac enter====")
+                    clearscreen()
+                    menu()
+                    try:
+                        volba = int(input("Zvol moznost:"))
+                    except:
+                        print("Nespravny input.")
+                        break
+                print("Logging out.")
+                logger.info("Log out")
 
+            elif x != str(se.getMessage()):
+                print("Nespravny kod")
+                logger.info("Unsuccessful login")
+        elif database.comparePasswords() == False:
+            print("Nespravne heslo")
+            input("====Stlac enter====")
 
     elif choice == 2:
         logger.info("Sign up chosen")
+        print("Zadaj email: ")
+        mail = input()
+        password = getpass.getpass(prompt='Zadaj heslo:')
+        database = Database(mail, password)
+        database.addValues()
 
     else:
         print("Nespravna volba.")
@@ -148,7 +141,6 @@ while choice != 0:
         break
 print("Exit.")
 logger.info("Quit")
-conn.close()
 
 
 
@@ -161,11 +153,3 @@ conn.close()
 
 
 
-
-
-
-
-
-#Print databazy
-#for row in c.execute('SELECT * FROM users;'):
-#    print(row)
