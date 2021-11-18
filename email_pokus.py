@@ -10,13 +10,10 @@ class sendEmail:
     rn = RandomCode()
     code = rn.random_code()
     
-
     def send_email(self, recipient):
         self.gmailUser = 'adventurousmanager@gmail.com'
         self.gmailPassword = '8^Tfj3@RGL'
         self.recipient = recipient
-        #'oliverbielik@gmail.com'
-        
         
         message = str("YOUR SECURITY CODE IS: " + self.code)
 
