@@ -46,6 +46,7 @@ while choice != 0:
         mail = input()
         password = getpass.getpass(prompt='Zadaj heslo:')
         database = Database(mail, password)
+        
         if database.comparePasswords() == True:
             clearscreen()
             #Posielanie mailu, DOCASNE VYPNUTE
@@ -95,11 +96,13 @@ while choice != 0:
             input("====Stlac enter====")
 
     elif choice == 2:
+        clearscreen()
         logger.info("Sign up chosen")
         print("Zadaj email: ")
         mail = input()
         password = getpass.getpass(prompt='Zadaj heslo:')
         database = Database(mail, password)
+        database.createTable()
         database.addValues()
 
     else:
