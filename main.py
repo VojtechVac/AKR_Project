@@ -2,8 +2,6 @@ from email_pokus import sendEmail
 from login import Login
 import os
 from sys import platform
-import sqlite3
-import hashlib
 import getpass
 from login import Login
 import logging
@@ -24,19 +22,10 @@ def menu():
       print("3. Zmazat heslo")
       print("0. Odhlasit")
 
-def pwVerify(password):
-    pw = password.encode('utf-8')
-    hashed = hashlib.sha256(pw).hexdigest()
-    if login.getHash() == hashed:
-        return True
-    else:
-        return False
-
 def firstScreen():
     print("1. Prihlasit sa")
     print("2. Registrovat sa")
     print("0. Exit")
-
 
 #PREMENNE
 mail = ""
@@ -46,21 +35,6 @@ logging.basicConfig(filename="logfile.log",
                     filemode='a')
 logger=logging.getLogger()
 logger.setLevel(logging.DEBUG)
-
-
-#Tuto sa user prihlasuje, ma 5 pokusov zadat spravne heslo
-"""for i in range(5):
-    print("Zadaj heslo:")
-    password = input()
-    if pwVerify(password) == True:
-        clearscreen()
-        print("Vitajte.")
-        break
-    elif pwVerify(password) != True:
-        clearscreen()
-        print("Skus znova.")
-        logger.info("Wrong password")
-"""
 
 firstScreen()
 choice = int(input("Zvol moznost:"))
@@ -73,10 +47,10 @@ while choice != 0:
         password = getpass.getpass(prompt='Zadaj heslo:')
         database = Database(mail, password)
         if database.comparePasswords() == True:
-            #clearscreen()
+            clearscreen()
             #Posielanie mailu, DOCASNE VYPNUTE
-            #se = sendEmail()
-            #se.send_email(mail) 
+            se = sendEmail()
+            se.send_email(mail) 
             print("Zadaj kod:")
             x = input()
             if x == str(se.getMessage()):
