@@ -15,14 +15,6 @@ heslo: 8^Tfj3@RGL
 
 #Treba nainštalovať 
 
-pyotp --> pip3 install pyotp
-
-qrcode --> pip3 install qrcode
-
-pillow --> pip3 install Pillow
-
-IPython --> pip3 install IPython
-
 pwinput --> pip install pwinput
 
 bcrypt --> pip3 install bcrypt
