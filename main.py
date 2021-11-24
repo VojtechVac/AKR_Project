@@ -8,32 +8,36 @@ import logging
 import bcrypt
 from sqliteoperations import Database
 
+
 def clearscreen():
     if platform == 'win32':
-        os.system('cls') 
+        os.system('cls')
     elif platform == 'darwin':
-        os.system('clear') 
+        os.system('clear')
     elif platform == 'linux':
-        os.system('clear') 
-    
+        os.system('clear')
+
+
 def menu():
-      print("1. Zobrazit hesla")
-      print("2. Pridat heslo")
-      print("3. Zmazat heslo")
-      print("0. Odhlasit")
+    print("1. Zobrazit hesla")
+    print("2. Pridat heslo")
+    print("3. Zmazat heslo")
+    print("0. Odhlasit")
+
 
 def firstScreen():
     print("1. Prihlasit sa")
     print("2. Registrovat sa")
     print("0. Exit")
 
-#PREMENNE
+
+# PREMENNE
 mail = ""
 password = ""
 logging.basicConfig(filename="logfile.log",
                     format='%(asctime)s %(message)s',
                     filemode='a')
-logger=logging.getLogger()
+logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 firstScreen()
@@ -46,12 +50,12 @@ while choice != 0:
         mail = input()
         password = getpass.getpass(prompt='Zadaj heslo:')
         database = Database(mail, password)
-        
+
         if database.comparePasswords() == True:
             clearscreen()
-            #Posielanie mailu, DOCASNE VYPNUTE
+            # Posielanie mailu, DOCASNE VYPNUTE
             se = sendEmail()
-            se.send_email(mail) 
+            se.send_email(mail)
             print("Zadaj kod:")
             x = input()
             if x == str(se.getMessage()):
@@ -118,15 +122,3 @@ while choice != 0:
         break
 print("Exit.")
 logger.info("Quit")
-
-
-
-
-
-
-
-
-
-
-
-
